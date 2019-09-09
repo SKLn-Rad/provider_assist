@@ -14,6 +14,9 @@ This package wraps your top level views for each page in BaseView, this widget s
 2) Provide raising and handling of errors in your view model by implementing the onErrorOccured callback.
     1) Call notifyError in your ViewModel, passing it a error code as a string
     2) Implement the onErrorOccured function on your view to get the error code passed by the view model and act on it
+3) Callbacks for onModelReady and onViewReady
+    1) onModelReady will be run once when the models constructor has completed
+    2) onViewReady will be run once when the view first renders to the screen
     
 ## Future Features
 This is down to you! I use this on a daily basis so I will be adding features I find useful in everyday development. For example:
