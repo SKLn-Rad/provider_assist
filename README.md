@@ -9,8 +9,8 @@ This package wraps your top level views for each page in BaseView, this widget s
 
 ## Features
 1) Provide layout information on the builder of the view, this will include:
-    *) Whether the device is a tablet or not (7" or above)
-    *) Whether the device is landscape
+    1) Whether the device is a tablet or not (7" or above)
+    2) Whether the device is landscape
 2) Provide raising and handling of errors in your view model by implementing the onErrorOccured callback.
     1) Call notifyError in your ViewModel, passing it a error code as a string
     2) Implement the onErrorOccured function on your view to get the error code passed by the view model and act on it
