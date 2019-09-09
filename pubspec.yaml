@@ -1,8 +1,8 @@
 name: provider_assist
 description: Extras for the provider package to enhance the pattern
 version: 0.0.1
-author: Ryan Dixon
-homepage:
+author: Ryan Dixon <ryandixon1993@gmail.com>
+homepage: https://github.com/SKLn-Rad/provider_assist
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
