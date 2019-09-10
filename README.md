@@ -5,7 +5,7 @@ This is a simple package used to enhance the provider package with additional fe
 Note: This pattern is very heavily influenced by FilledStacks Provider v3 Architecture (Thanks a lot!)
 
 ## In a nutshell
-This package wraps your top level views for each page in BaseView, this widget should implement a viewmodel whcih extends BaseViewModel. Once you have wrapped your view, this package will give you callbacks and metadata during each build which can be used to enhance the quality of your code.
+This package wraps your top level views for each page in BaseView, this widget should pass in a model which extends BaseViewModel. Once you have wrapped your view, this package will give you callbacks and metadata during build which can be used to enhance the quality of your code.
 
 ## Features
 1) Provide layout information on the builder of the view, this will include:
@@ -40,9 +40,10 @@ class View extends StatelessWidget {
         print("Got a new error: $errorCode");
       },
       builder: (BuildContext context, ViewModel vm, LayoutInformation layout) {
-        print("Device is landscape: ${layout.isLandscape}");
-        print("Device is tablet: ${layout.isTablet}");
+        print("Device type: ${layout.deviceType}");
+        print("Device orientation: ${layout.orientation}");
         return Scaffold(
+          backgroundColor: layout.theme.backgroundColor,
           appBar: AppBar(
             title: Text('Example'),
           ),
@@ -51,7 +52,7 @@ class View extends StatelessWidget {
             alignment: Alignment.center,
             child: CupertinoButton(
               child: Text('Raise Error'),
-              onPressed: () => vm.onButtonClicked,
+              onPressed: () => vm.onButtonClicked(),
             ),
           ),
         );

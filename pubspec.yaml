@@ -1,6 +1,6 @@
 name: provider_assist
-description: Provides an MVVM pattern on top of the provider package to standardise state management. This package will give you a base view and view model which expose information about the system including device information, localization, and errors.
-version: 1.0.0
+description: Provider Assist gives you a base view and view model which expose information about the system including device information, localization, and errors on top of the provider pattern.
+version: 1.1.0
 author: Ryan Dixon <ryandixon1993@gmail.com>
 homepage: https://github.com/SKLn-Rad/provider_assist
 

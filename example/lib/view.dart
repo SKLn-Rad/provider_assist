@@ -13,9 +13,10 @@ class View extends StatelessWidget {
         print("Got a new error: $errorCode");
       },
       builder: (BuildContext context, ViewModel vm, LayoutInformation layout) {
-        print("Device is landscape: ${layout.isLandscape}");
-        print("Device is tablet: ${layout.isTablet}");
+        print("Device type: ${layout.deviceType}");
+        print("Device orientation: ${layout.orientation}");
         return Scaffold(
+          backgroundColor: layout.theme.backgroundColor,
           appBar: AppBar(
             title: Text('Example'),
           ),
