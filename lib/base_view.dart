@@ -45,6 +45,7 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
   void onErrorOccured(String event) {
     if (widget.onErrorOccured != null && mounted) {
       widget.onErrorOccured(context, event);
+      setState(() {});
     }
   }
 

@@ -24,7 +24,7 @@ class View extends StatelessWidget {
             alignment: Alignment.center,
             child: CupertinoButton(
               child: Text('Raise Error'),
-              onPressed: () => vm.onButtonClicked,
+              onPressed: () => vm.onButtonClicked(),
             ),
           ),
         );
