@@ -1,5 +1,5 @@
 name: provider_assist
-description: Provider Assist gives you a base view and view model which expose information about the system including device information, localization, and errors on top of the provider pattern.
+description: Wrap provider to expose information about the system including device information, localization, and errors through an MVVM pattern.
 version: 1.1.0
 author: Ryan Dixon <ryandixon1993@gmail.com>
 homepage: https://github.com/SKLn-Rad/provider_assist
