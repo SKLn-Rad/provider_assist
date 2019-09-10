@@ -3,3 +3,6 @@
 
 ## [0.0.2] - 09/09/2019
 * Improve documentation around BaseView
+
+## [0.0.3] - 10/09/2019
+* Leverage locale in layout information, first stable release
