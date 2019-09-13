@@ -1,6 +1,6 @@
 name: provider_assist
 description: Wrap provider to expose information about the system including device information, localization, and errors through an MVVM pattern.
-version: 1.1.0
+version: 1.2.0
 author: Ryan Dixon <ryandixon1993@gmail.com>
 homepage: https://github.com/SKLn-Rad/provider_assist
 
@@ -10,6 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
   provider: ^3.1.0
 
 dev_dependencies:

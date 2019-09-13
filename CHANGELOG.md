@@ -1,3 +1,6 @@
+## [1.2.0] - 13/09/2019
+* Basic localization support, see example
+
 ## [1.1.0] - 10/09/2019
 * (BREAKING CHANGES) Refactored the LayoutInformation passed back from the build function to be more futureproof.
 

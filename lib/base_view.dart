@@ -6,9 +6,7 @@ import 'package:provider_assist/base_view_model.dart';
 import 'package:provider_assist/provider_assist.dart';
 
 class BaseView<T extends BaseViewModel> extends StatefulWidget {
-  final Widget Function(
-          BuildContext context, T model, LayoutInformation layoutInformation)
-      builder;
+  final Widget Function(BuildContext context, T model, LayoutInformation layoutInformation) builder;
   final T model;
   final Function(T) onModelReady;
   final Function(BuildContext context) onViewFirstLoad;

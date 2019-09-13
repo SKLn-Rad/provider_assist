@@ -18,14 +18,19 @@ class View extends StatelessWidget {
         return Scaffold(
           backgroundColor: layout.theme.backgroundColor,
           appBar: AppBar(
-            title: Text('Example'),
+            title: Text(layout.translations['view_title']),
           ),
           body: Container(
             width: double.infinity,
             alignment: Alignment.center,
-            child: CupertinoButton(
-              child: Text('Raise Error'),
-              onPressed: () => vm.onButtonClicked(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CupertinoButton(
+                  child: Text(layout.translations['view_raise_error']),
+                  onPressed: () => vm.onButtonClicked(),
+                ),
+              ],
             ),
           ),
         );

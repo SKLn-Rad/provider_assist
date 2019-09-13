@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:provider_assist/provider_assist.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'view.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  registerTranslations(translations);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Example',
+      // Swap below to change locale
+      locale: Locale('en'),
+      // locale: Locale('hi'),
+      supportedLocales: <Locale>[
+        Locale('en'),
+        Locale('hi'),
+      ],
+      localizationsDelegates: <LocalizationsDelegate>[
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -17,3 +32,14 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+Map<Locale, Map<String, String>> translations = {
+  Locale('en'): {
+    'view_title': 'Example Title',
+    'view_raise_error': 'Raise Error',
+  },
+  Locale('hi'): {
+    'view_title': 'उदाहरण शीर्षक',
+    'view_raise_error': 'त्रुटि उठाएँ',
+  },
+};

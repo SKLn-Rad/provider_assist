@@ -8,6 +8,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+    
   provider_assist:
 
 dev_dependencies:

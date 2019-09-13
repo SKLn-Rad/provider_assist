@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider_assist/device_type.dart';
+import 'package:provider_assist/provider_assist.dart';
 
 class LayoutInformation {
   LayoutInformation(BuildContext context)
@@ -8,6 +8,7 @@ class LayoutInformation {
         deviceType = getDeviceTypeFromContext(context),
         orientation = MediaQuery.of(context).orientation,
         locale = Localizations.localeOf(context),
+        translations = getTranslationsForLocale(Localizations.localeOf(context)),
         theme = Theme.of(context);
 
   final Size deviceSize;
@@ -15,6 +16,7 @@ class LayoutInformation {
   final DeviceType deviceType;
   final Orientation orientation;
   final Locale locale;
+  final Map<String, String> translations;
   final ThemeData theme;
 
   static const double phoneShortestWidthThreshold = 320.0;

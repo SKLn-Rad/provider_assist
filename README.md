@@ -17,10 +17,14 @@ This package wraps your top level views for each page in BaseView, this widget s
 3) Callbacks for onModelReady and onViewReady
     1) onModelReady will be run once when the models constructor has completed
     2) onViewReady will be run once when the view first renders to the screen
+4) Basic translation and localization support
+    1) You have to import the flutter localizations package in your pubspec, see the example
+    2) Next call registerTranslations() from your main method, passing in a map of locales to key/value pairs
+    3) The translations will then be passed down for your locale in the layoutInformation property in baseView
     
 ## Future Features
 This is down to you! I use this on a daily basis so I will be adding features I find useful in everyday development. For example:
-1) Localization
+1) Improve Localization
 2) Globally handling errors rather than implementing on each view (for example pushing an error page)
 3) Passing further data down to the widget about the system. OS, etc...
 
@@ -28,7 +32,49 @@ This is down to you! I use this on a daily basis so I will be adding features I 
 * Write tests to improve rating
 * Improve documentation and example
 
-## Example!
+## Example Main
+```dart
+void main() {
+  registerTranslations(translations);
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Example',
+      // Swap below to change locale
+      locale: Locale('en'),
+      // locale: Locale('hi'),
+      supportedLocales: <Locale>[
+        Locale('en'),
+        Locale('hi'),
+      ],
+      localizationsDelegates: <LocalizationsDelegate>[
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: View(),
+    );
+  }
+}
+
+Map<Locale, Map<String, String>> translations = {
+  Locale('en'): {
+    'view_title': 'Example Title',
+    'view_raise_error': 'Raise Error',
+  },
+  Locale('hi'): {
+    'view_title': 'उदाहरण शीर्षक',
+    'view_raise_error': 'त्रुटि उठाएँ',
+  },
+};
+```
+
 ### Example View
 ```dart
 class View extends StatelessWidget {
@@ -45,14 +91,19 @@ class View extends StatelessWidget {
         return Scaffold(
           backgroundColor: layout.theme.backgroundColor,
           appBar: AppBar(
-            title: Text('Example'),
+            title: Text(layout.translations['view_title']),
           ),
           body: Container(
             width: double.infinity,
             alignment: Alignment.center,
-            child: CupertinoButton(
-              child: Text('Raise Error'),
-              onPressed: () => vm.onButtonClicked(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CupertinoButton(
+                  child: Text(layout.translations['view_raise_error']),
+                  onPressed: () => vm.onButtonClicked(),
+                ),
+              ],
             ),
           ),
         );
