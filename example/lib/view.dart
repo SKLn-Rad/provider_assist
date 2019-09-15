@@ -12,6 +12,9 @@ class View extends StatelessWidget {
       onErrorOccured: (BuildContext context, String errorCode) {
         print("Got a new error: $errorCode");
       },
+      onEventOccured: (BuildContext context, String event) {
+        print("Got a new event: $event");
+      },
       builder: (BuildContext context, ViewModel vm, LayoutInformation layout) {
         print("Device type: ${layout.deviceType}");
         print("Device orientation: ${layout.orientation}");
@@ -28,7 +31,12 @@ class View extends StatelessWidget {
               children: <Widget>[
                 CupertinoButton(
                   child: Text(layout.translations['view_raise_error']),
-                  onPressed: () => vm.onButtonClicked(),
+                  onPressed: () => vm.onErrorRequested(),
+                ),
+                SizedBox(height: 8.0),
+                CupertinoButton(
+                  child: Text(layout.translations['view_raise_event']),
+                  onPressed: () => vm.onEventRequested(),
                 ),
               ],
             ),

@@ -21,6 +21,10 @@ This package wraps your top level views for each page in BaseView, this widget s
     1) You have to import the flutter localizations package in your pubspec, see the example
     2) Next call registerTranslations() from your main method, passing in a map of locales to key/value pairs
     3) The translations will then be passed down for your locale in the layoutInformation property in baseView
+5) Generic event callback from ViewModel to View via notifyEvent and onEventOccured
+    1) Call notifyEvent in your ViewModel, passing it a string representing the event
+    2) Implement the onEventOccured function on your view to get the event passed by the view model and act on it
+      1) This can be useful for telling the UI to navigate, for example when a user logins in
     
 ## Future Features
 This is down to you! I use this on a daily basis so I will be adding features I find useful in everyday development. For example:
@@ -67,10 +71,12 @@ Map<Locale, Map<String, String>> translations = {
   Locale('en'): {
     'view_title': 'Example Title',
     'view_raise_error': 'Raise Error',
+    'view_raise_event': 'Raise Event',
   },
   Locale('hi'): {
     'view_title': 'उदाहरण शीर्षक',
     'view_raise_error': 'त्रुटि उठाएँ',
+    'view_raise_event': 'घटना को बढ़ाएँ',
   },
 };
 ```
@@ -84,6 +90,9 @@ class View extends StatelessWidget {
       model: ViewModel(),
       onErrorOccured: (BuildContext context, String errorCode) {
         print("Got a new error: $errorCode");
+      },
+      onEventOccured: (BuildContext context, String event) {
+        print("Got a new event: $event");
       },
       builder: (BuildContext context, ViewModel vm, LayoutInformation layout) {
         print("Device type: ${layout.deviceType}");
@@ -101,7 +110,12 @@ class View extends StatelessWidget {
               children: <Widget>[
                 CupertinoButton(
                   child: Text(layout.translations['view_raise_error']),
-                  onPressed: () => vm.onButtonClicked(),
+                  onPressed: () => vm.onErrorRequested(),
+                ),
+                SizedBox(height: 8.0),
+                CupertinoButton(
+                  child: Text(layout.translations['view_raise_event']),
+                  onPressed: () => vm.onEventRequested(),
                 ),
               ],
             ),
@@ -116,10 +130,19 @@ class View extends StatelessWidget {
 ### Example View Model
 ```dart
 class ViewModel extends BaseViewModel {
-  void onButtonClicked() {
+  void onErrorRequested() {
     try {
       setBusy(true);
       notifyError('Random error');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  void onEventRequested() {
+    try {
+      setBusy(true);
+      notifyEvent('Random event');
     } finally {
       setBusy(false);
     }

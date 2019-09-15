@@ -11,6 +11,7 @@ class BaseView<T extends BaseViewModel> extends StatefulWidget {
   final Function(T) onModelReady;
   final Function(BuildContext context) onViewFirstLoad;
   final Function(BuildContext context, String errorCode) onErrorOccured;
+  final Function(BuildContext context, String event) onEventOccured;
 
   BaseView({
     Key key,
@@ -19,6 +20,7 @@ class BaseView<T extends BaseViewModel> extends StatefulWidget {
     this.onModelReady,
     this.onViewFirstLoad,
     this.onErrorOccured,
+    this.onEventOccured,
   }) : super(key: key);
 
   _BaseViewState<T> createState() => _BaseViewState<T>();
@@ -27,6 +29,7 @@ class BaseView<T extends BaseViewModel> extends StatefulWidget {
 class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
   BaseViewModel model;
   StreamSubscription<String> errorSubscription;
+  StreamSubscription<String> eventSubscription;
   LayoutInformation layoutInformation;
 
   @override
@@ -38,8 +41,16 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
     }
 
     errorSubscription = model.onErrorOccured.listen(onErrorOccured);
+    eventSubscription = model.onErrorOccured.listen(onEventOccured);
     WidgetsBinding.instance.addPostFrameCallback(onWidgetFirstBuilt);
     super.initState();
+  }
+
+  void onEventOccured(String event) {
+    if (widget.onEventOccured != null && mounted) {
+      widget.onEventOccured(context, event);
+      setState(() {});
+    }
   }
 
   void onErrorOccured(String event) {
@@ -61,15 +72,15 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
     return ChangeNotifierProvider<T>(
       builder: (context) => model,
       child: Consumer<T>(
-        builder: (BuildContext context, T t, Widget child) =>
-            widget.builder(context, t, layoutInformation),
+        builder: (BuildContext context, T t, Widget child) => widget.builder(context, t, layoutInformation),
       ),
     );
   }
 
   @override
   void dispose() {
-    errorSubscription.cancel();
+    errorSubscription?.cancel();
+    eventSubscription?.cancel();
     super.dispose();
   }
 }

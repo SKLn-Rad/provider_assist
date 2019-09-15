@@ -9,8 +9,15 @@ class BaseViewModel extends ChangeNotifier {
   final StreamController<String> errorSubscription = StreamController<String>();
   Stream<String> get onErrorOccured => errorSubscription.stream;
 
+  final StreamController<String> eventSubscription = StreamController<String>();
+  Stream<String> get onEventOccured => errorSubscription.stream;
+
   void notifyError(String errorCode) {
     errorSubscription.sink.add(errorCode);
+  }
+
+  void notifyEvent(String event) {
+    eventSubscription.sink.add(event);
   }
 
   void setBusy(bool value) {
@@ -21,6 +28,7 @@ class BaseViewModel extends ChangeNotifier {
   @override
   void dispose() {
     errorSubscription.close();
+    eventSubscription?.close();
     super.dispose();
   }
 }

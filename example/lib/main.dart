@@ -37,9 +37,11 @@ Map<Locale, Map<String, String>> translations = {
   Locale('en'): {
     'view_title': 'Example Title',
     'view_raise_error': 'Raise Error',
+    'view_raise_event': 'Raise Event',
   },
   Locale('hi'): {
     'view_title': 'उदाहरण शीर्षक',
     'view_raise_error': 'त्रुटि उठाएँ',
+    'view_raise_event': 'घटना को बढ़ाएँ',
   },
 };

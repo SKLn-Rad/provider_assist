@@ -1,3 +1,6 @@
+## [1.3.0] - 13/09/2019
+* Added a new callback on BaseViewModel to raise events back to the UI via a string, this can be used for anything. Examples being login, navigation requests, etc.
+
 ## [1.2.0] - 13/09/2019
 * Basic localization support, see example
 
