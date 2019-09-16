@@ -1,3 +1,6 @@
+## [1.4.0] - 17/09/2019
+* BREAKING CHANGE: onViewFirstLoad will now supply the model. You will need to ammend your code to include this!
+
 ## [1.3.2] - 17/09/2019
 * Fix another small bug with event streams.
 

@@ -7,6 +7,10 @@ Note: This pattern is very heavily influenced by FilledStacks Provider v3 Archit
 ## In a nutshell
 This package wraps your top level views for each page in BaseView, this widget should pass in a model which extends BaseViewModel. Once you have wrapped your view, this package will give you callbacks and metadata during build which can be used to enhance the quality of your code.
 
+## Breaking Change (1.4.0)
+The onViewFirstLoad callback will now supply the model. Please update your code to include this additional parameter.
+Apologies for this, this was an oversight on me but it will allow you to interact with your model immediately after the view is visible. This is useful for a number of things, e.g. checking if the user is logged in on a splash view.
+
 ## Features
 1) Provide layout information on the builder of the view, this will include:
     1) Whether the device is a tablet or not (7" or above)

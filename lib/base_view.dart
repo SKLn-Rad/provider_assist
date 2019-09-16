@@ -9,7 +9,7 @@ class BaseView<T extends BaseViewModel> extends StatefulWidget {
   final Widget Function(BuildContext context, T model, LayoutInformation layoutInformation) builder;
   final T model;
   final Function(T) onModelReady;
-  final Function(BuildContext context) onViewFirstLoad;
+  final Function(BuildContext context, T model) onViewFirstLoad;
   final Function(BuildContext context, String errorCode) onErrorOccured;
   final Function(BuildContext context, String event) onEventOccured;
 
@@ -62,7 +62,7 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
 
   void onWidgetFirstBuilt(Duration timeStamp) {
     if (widget.onViewFirstLoad != null && mounted) {
-      widget.onViewFirstLoad(context);
+      widget.onViewFirstLoad(context, model);
     }
   }
 
