@@ -15,6 +15,12 @@ class View extends StatelessWidget {
       onEventOccured: (BuildContext context, String event) {
         print("Got a new event: $event");
       },
+      onModelReady: (ViewModel model) {
+        print("Model is ready, but view is still not visible");
+      },
+      onViewFirstLoad: (BuildContext context, ViewModel model) {
+        print("View is rendered");
+      },
       builder: (BuildContext context, ViewModel vm, LayoutInformation layout) {
         print("Device type: ${layout.deviceType}");
         print("Device orientation: ${layout.orientation}");
