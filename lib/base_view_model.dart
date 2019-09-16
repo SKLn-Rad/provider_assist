@@ -10,7 +10,7 @@ class BaseViewModel extends ChangeNotifier {
   Stream<String> get onErrorOccured => errorSubscription.stream;
 
   final StreamController<String> eventSubscription = StreamController<String>();
-  Stream<String> get onEventOccured => errorSubscription.stream;
+  Stream<String> get onEventOccured => eventSubscription.stream;
 
   void notifyError(String errorCode) {
     errorSubscription.sink.add(errorCode);

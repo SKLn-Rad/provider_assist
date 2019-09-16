@@ -1,3 +1,6 @@
+## [1.3.2] - 17/09/2019
+* Fix another small bug with event streams.
+
 ## [1.3.1] - 17/09/2019
 * Fix a bug where the same stream was being listened to twice causing an assertion.
 
