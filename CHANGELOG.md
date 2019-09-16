@@ -1,4 +1,7 @@
-## [1.3.0] - 13/09/2019
+## [1.3.1] - 17/09/2019
+* Fix a bug where the same stream was being listened to twice causing an assertion.
+
+## [1.3.0] - 16/09/2019
 * Added a new callback on BaseViewModel to raise events back to the UI via a string, this can be used for anything. Examples being login, navigation requests, etc.
 
 ## [1.2.0] - 13/09/2019

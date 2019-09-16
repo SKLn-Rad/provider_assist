@@ -41,7 +41,7 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
     }
 
     errorSubscription = model.onErrorOccured.listen(onErrorOccured);
-    eventSubscription = model.onErrorOccured.listen(onEventOccured);
+    eventSubscription = model.onEventOccured.listen(onEventOccured);
     WidgetsBinding.instance.addPostFrameCallback(onWidgetFirstBuilt);
     super.initState();
   }
