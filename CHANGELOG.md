@@ -1,3 +1,6 @@
+## [1.4.1] - 20/09/2019
+* Provide the current context of the consumer in layoutInformation, use this sparingly!
+
 ## [1.4.0] - 17/09/2019
 * BREAKING CHANGE: onViewFirstLoad will now supply the model. You will need to ammend your code to include this!
 

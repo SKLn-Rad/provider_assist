@@ -3,7 +3,8 @@ import 'package:provider_assist/provider_assist.dart';
 
 class LayoutInformation {
   LayoutInformation(BuildContext context)
-      : deviceSize = MediaQuery.of(context).size,
+      : context = context,
+        deviceSize = MediaQuery.of(context).size,
         devicePadding = MediaQuery.of(context).padding,
         deviceType = getDeviceTypeFromContext(context),
         orientation = MediaQuery.of(context).orientation,
@@ -11,6 +12,7 @@ class LayoutInformation {
         translations = getTranslationsForLocale(Localizations.localeOf(context)),
         theme = Theme.of(context);
 
+  final BuildContext context;
   final Size deviceSize;
   final EdgeInsets devicePadding;
   final DeviceType deviceType;
