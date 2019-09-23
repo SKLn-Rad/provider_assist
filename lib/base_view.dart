@@ -10,8 +10,8 @@ class BaseView<T extends BaseViewModel> extends StatefulWidget {
   final T model;
   final Function(T) onModelReady;
   final Function(BuildContext context, T model) onViewFirstLoad;
-  final Function(BuildContext context, String errorCode) onErrorOccured;
-  final Function(BuildContext context, String event) onEventOccured;
+  final Function(BuildContext context, T model, String errorCode) onErrorOccured;
+  final Function(BuildContext context, T model, String event) onEventOccured;
 
   BaseView({
     Key key,
@@ -48,14 +48,14 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
 
   void onEventOccured(String event) {
     if (widget.onEventOccured != null && mounted) {
-      widget.onEventOccured(context, event);
+      widget.onEventOccured(context, model, event);
       setState(() {});
     }
   }
 
   void onErrorOccured(String event) {
     if (widget.onErrorOccured != null && mounted) {
-      widget.onErrorOccured(context, event);
+      widget.onErrorOccured(context, model, event);
       setState(() {});
     }
   }

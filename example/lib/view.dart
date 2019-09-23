@@ -9,10 +9,10 @@ class View extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseView<ViewModel>(
       model: ViewModel(),
-      onErrorOccured: (BuildContext context, String errorCode) {
+      onErrorOccured: (BuildContext context, ViewModel model, String errorCode) {
         print("Got a new error: $errorCode");
       },
-      onEventOccured: (BuildContext context, String event) {
+      onEventOccured: (BuildContext context, ViewModel model, String event) {
         print("Got a new event: $event");
       },
       onModelReady: (ViewModel model) {
