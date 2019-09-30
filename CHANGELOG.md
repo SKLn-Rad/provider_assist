@@ -1,3 +1,6 @@
+## [1.5.1] - 17/09/2019
+* Improve Documentation
+
 ## [1.5.0] - 17/09/2019
 * BREAKING CHANGE: onEventReceived and onErrorReceived will now supply the model. You will need to ammend your code to include this!
 

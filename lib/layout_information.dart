@@ -9,7 +9,8 @@ class LayoutInformation {
         deviceType = getDeviceTypeFromContext(context),
         orientation = MediaQuery.of(context).orientation,
         locale = Localizations.localeOf(context),
-        translations = getTranslationsForLocale(Localizations.localeOf(context)),
+        translations =
+            getTranslationsForLocale(Localizations.localeOf(context)),
         theme = Theme.of(context);
 
   final BuildContext context;

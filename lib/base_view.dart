@@ -6,11 +6,14 @@ import 'package:provider_assist/base_view_model.dart';
 import 'package:provider_assist/provider_assist.dart';
 
 class BaseView<T extends BaseViewModel> extends StatefulWidget {
-  final Widget Function(BuildContext context, T model, LayoutInformation layoutInformation) builder;
+  final Widget Function(
+          BuildContext context, T model, LayoutInformation layoutInformation)
+      builder;
   final T model;
   final Function(T) onModelReady;
   final Function(BuildContext context, T model) onViewFirstLoad;
-  final Function(BuildContext context, T model, String errorCode) onErrorOccured;
+  final Function(BuildContext context, T model, String errorCode)
+      onErrorOccured;
   final Function(BuildContext context, T model, String event) onEventOccured;
 
   BaseView({
@@ -72,7 +75,8 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
     return ChangeNotifierProvider<T>(
       builder: (context) => model,
       child: Consumer<T>(
-        builder: (BuildContext context, T t, Widget child) => widget.builder(context, t, layoutInformation),
+        builder: (BuildContext context, T t, Widget child) =>
+            widget.builder(context, t, layoutInformation),
       ),
     );
   }
