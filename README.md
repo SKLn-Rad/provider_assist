@@ -11,6 +11,9 @@ This package wraps your top level views for each page in BaseView, this widget s
 The onViewFirstLoad, onEventReceived, and onErrorReceived callback will now supply the model. Please update your code to include this additional parameter.
 Apologies for this, this was an oversight on me but it will allow you to interact with your model immediately after the view is visible. This is useful for a number of things, e.g. checking if the user is logged in on a splash view.
 
+## Lifecycle
+![Lifecycle](https://raw.githubusercontent.com/SKLn-Rad/provider_assist/master/lifecycle.png)
+
 ## Features
 1) Provide layout information on the builder of the view, this will include:
     1) Whether the device is a tablet or not (7" or above)
