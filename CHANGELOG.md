@@ -1,3 +1,6 @@
+## [1.5.2] - 06/11/2019
+* Fix example in documentation
+
 ## [1.5.1] - 17/09/2019
 * Improve Documentation
 

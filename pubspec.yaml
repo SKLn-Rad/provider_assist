@@ -1,6 +1,6 @@
 name: provider_assist
 description: Wrap provider to expose information about the system including device information, localization, and errors through an MVVM pattern.
-version: 1.5.1
+version: 1.5.2
 author: Ryan Dixon <ryandixon1993@gmail.com>
 homepage: https://github.com/SKLn-Rad/provider_assist
 
