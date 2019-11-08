@@ -1,3 +1,6 @@
+## [1.5.3] - 08/11/2019
+* Fix a potential NPE when trying to create a mock for a view model
+
 ## [1.5.2] - 06/11/2019
 * Fix example in documentation
 
