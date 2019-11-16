@@ -1,24 +1,52 @@
 library provider_assist;
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:provider_assist/middleware/event_middleware.dart';
 
-export 'base_view.dart';
-export 'base_view_model.dart';
-export 'layout_information.dart';
-export 'device_type.dart';
+import 'events/event.dart';
 
-Map<Locale, Map<String, String>> _translations = {};
-Map<Locale, Map<String, String>> get translations => _translations;
+export 'adapters/layout_information.dart';
+export 'adapters/localization_information.dart';
 
-void registerTranslations(Map<Locale, Map<String, String>> translations) {
-  _translations = translations;
-}
+export 'enumerations/device_type.dart';
+export 'events/error_event.dart';
+export 'events/event.dart';
 
-Map<String, String> getTranslationsForLocale(Locale locale) {
-  Map<String, String> translations = {};
-  if (locale != null && _translations.containsKey(locale)) {
-    translations = _translations[locale];
+export 'middleware/event_middleware.dart';
+
+export 'view_models/base_view_model.dart';
+export 'view_models/event_view_model.dart';
+
+export 'views/base_view.dart';
+export 'views/event_view.dart';
+
+class ProviderAssist extends InheritedWidget {
+  const ProviderAssist({
+    Key key,
+    @required Widget child,
+    this.eventMiddleware = const <EventMiddleware<Event>>[],
+    this.providers = const <SingleChildCloneableWidget>[],
+  })  : assert(child != null),
+        assert(eventMiddleware != null),
+        assert(providers != null),
+        wrappedChild = child,
+        super(key: key);
+
+  final Widget wrappedChild;
+  final List<SingleChildCloneableWidget> providers;
+  final List<EventMiddleware<Event>> eventMiddleware;
+
+  @override
+  Widget get child {
+    return MultiProvider(
+      providers: providers,
+      child: wrappedChild,
+    );
   }
 
-  return translations;
+  @override
+  bool updateShouldNotify(InheritedWidget oldWidget) {
+    return false;
+  }
 }

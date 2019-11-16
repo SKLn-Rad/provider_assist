@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider_assist/provider_assist.dart';
 
 class LayoutInformation {
-  LayoutInformation(BuildContext context)
-      : context = context,
-        deviceSize = MediaQuery.of(context).size,
+  LayoutInformation({
+    @required this.context,
+  })  : deviceSize = MediaQuery.of(context).size,
         devicePadding = MediaQuery.of(context).padding,
         deviceType = getDeviceTypeFromContext(context),
         orientation = MediaQuery.of(context).orientation,
         locale = Localizations.localeOf(context),
-        translations =
-            getTranslationsForLocale(Localizations.localeOf(context)),
+        translations = getTranslationsForLocale(Localizations.localeOf(context)),
         theme = Theme.of(context);
 
   final BuildContext context;
@@ -28,8 +27,9 @@ class LayoutInformation {
 }
 
 DeviceType getDeviceTypeFromContext(BuildContext context) {
+  final Orientation orientation = MediaQuery.of(context).orientation;
   final Size size = MediaQuery.of(context).size;
-  final double shortestSize = size.shortestSide;
+  final double shortestSize = orientation == Orientation.portrait ? size.width : size.height;
 
   DeviceType type = DeviceType.Watch;
   if (shortestSize >= LayoutInformation.phoneShortestWidthThreshold) {
