@@ -24,6 +24,7 @@ class _EventViewState<T extends EventViewModel> extends State<EventView<T>> {
   T model;
   LayoutInformation layoutInformation;
   StreamSubscription<ProcessedEvent> processedEventStreamSubscription;
+  StreamSubscription<ProcessedEvent> processedErrorStreamSubscription;
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _EventViewState<T extends EventViewModel> extends State<EventView<T>> {
   Widget build(BuildContext context) {
     final ProviderAssist providerAssist = ProviderAssist.of(context);
     processedEventStreamSubscription = providerAssist.processedEventStream.listen(onProcessedEvent);
+    processedErrorStreamSubscription = providerAssist.processedErrorStream.listen(onProcessedError);
 
     model ??= widget.buildModel(context);
     layoutInformation ??= LayoutInformation(context: context);
@@ -60,18 +62,24 @@ class _EventViewState<T extends EventViewModel> extends State<EventView<T>> {
     }
 
     try {
-      if (event.hasError) {
-        throw event.error;
-      }
       await model.handleEvent(context, event.event);
     } catch (ex) {
-      await model.handleError(context, event.event, ex);
+      ProviderAssist.of(context).dispatchError(context, this, event.event, ex);
     }
+  }
+
+  Future<void> onProcessedError(ProcessedEvent event) async {
+    if (!mounted) {
+      return;
+    }
+
+    await model.handleError(context, event.event, event.error);
   }
 
   @override
   void dispose() {
     processedEventStreamSubscription?.cancel();
+    processedErrorStreamSubscription?.cancel();
     super.dispose();
   }
 }

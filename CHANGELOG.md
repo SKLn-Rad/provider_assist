@@ -1,3 +1,6 @@
+## [2.0.0-beta-7] - 18/11/2019
+* Bounce errors back up to provider assist so that middleware can handle them even if they occur at the view level
+
 ## [2.0.0-beta-6] - 18/11/2019
 * Catch exception on view handle event and throw to view handle error
 

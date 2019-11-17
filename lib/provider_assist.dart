@@ -55,8 +55,13 @@ class ProviderAssist extends InheritedWidget {
   final Map<Locale, Map<String, String>> localizations;
 
   final StreamController<ProcessedEvent> processedEventStreamController = StreamController<ProcessedEvent>.broadcast();
+  final StreamController<ProcessedEvent> processedErrorStreamController = StreamController<ProcessedEvent>.broadcast();
+
   Stream<ProcessedEvent> get processedEventStream => processedEventStreamController.stream;
   Function(ProcessedEvent) get addProcessedEvent => processedEventStreamController.sink.add;
+
+  Stream<ProcessedEvent> get processedErrorStream => processedErrorStreamController.stream;
+  Function(ProcessedEvent) get addProcessedError => processedErrorStreamController.sink.add;
 
   @override
   InheritedElement createElement() {
@@ -76,9 +81,6 @@ class ProviderAssist extends InheritedWidget {
   }
 
   Future<void> dispatchEvent(BuildContext context, Object sender, Event event) async {
-    Object error;
-
-    //* Process Middleware
     try {
       for (EventMiddleware<Event> middleware in eventMiddleware) {
         if (!middleware.matchesEventType(event)) {
@@ -90,18 +92,22 @@ class ProviderAssist extends InheritedWidget {
           return;
         }
       }
+
+      addProcessedEvent(ProcessedEvent(event: event, sender: sender));
     } catch (ex) {
-      error = ex;
-      for (ErrorMiddleware middleware in errorMiddleware) {
-        final MiddlewareResolution resolution = await middleware.handleEvent(context, sender, event);
-        if (resolution == MiddlewareResolution.Absorb) {
-          return;
-        }
+      dispatchError(context, sender, event, ex);
+    }
+  }
+
+  Future<void> dispatchError(BuildContext context, Object sender, Event event, Object error) async {
+    for (ErrorMiddleware middleware in errorMiddleware) {
+      final MiddlewareResolution resolution = await middleware.handleEvent(context, sender, event);
+      if (resolution == MiddlewareResolution.Absorb) {
+        return;
       }
     }
 
-    //* Send to stream for view models to listen to
-    addProcessedEvent(ProcessedEvent(event: event, sender: sender, error: error));
+    addProcessedError(ProcessedEvent(event: event, sender: sender, error: error));
   }
 
   @override
