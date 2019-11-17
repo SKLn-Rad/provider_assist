@@ -1,4 +1,4 @@
-## [2.0.0] - 17/11/2019
+## [2.0.0-beta-1] - 17/11/2019
 * BaseView and BaseViewModel are now deprecated in favour of the new EventView and EventViewModel inspired by React and FlutterBloc
 * Updated documentation to detail the new state management system
 * Added EventMiddleware to allow global handling of events (for example, moving common dialogs outside of the view, such as internet connectivity)
