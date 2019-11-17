@@ -93,6 +93,7 @@ class _EventViewState<T extends EventViewModel> extends State<EventView<T>> {
   Future<void> onWidgetFirstBuilt(Duration timeStamp) async {
     if (widget.onViewFirstLoad != null && mounted) {
       await widget.onViewFirstLoad(context, layoutInformation, model);
+      await model.onViewFirstLoad(context);
     }
   }
 }

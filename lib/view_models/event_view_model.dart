@@ -5,4 +5,5 @@ import 'package:provider_assist/events/event.dart';
 
 abstract class EventViewModel with ChangeNotifier {
   Future<void> handleEvent(BuildContext context, Event event);
+  Future<void> onViewFirstLoad(BuildContext context);
 }

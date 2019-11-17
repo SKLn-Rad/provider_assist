@@ -24,4 +24,7 @@ class HomeViewModel extends EventViewModel {
     hasCalledEvent = true;
     notifyListeners();
   }
+
+  @override
+  Future<void> onViewFirstLoad(BuildContext context) async {}
 }
