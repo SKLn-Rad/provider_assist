@@ -12,25 +12,56 @@ abstract class EventView<T extends EventViewModel> extends StatefulWidget {
   T buildModel();
   Widget buildView(BuildContext context, LayoutInformation layoutInformation, T model);
 
-  final List<Event> events;
+  Future<void> onEventStarted(BuildContext context, T model, Event event) async {}
+  Future<void> onEventFinished(BuildContext context, T model, Event event) async {}
+  Future<void> onEventError(BuildContext context, Object error, T model, Event event) async {}
+  Future<void> onViewFirstLoad(BuildContext context, LayoutInformation layoutInformation, T model) async {}
 
-  void onViewFirstLoad(BuildContext context, LayoutInformation layoutInformation, T model) {
-    //* Override to do stuff on view first load
-  }
+  final List<Event> events;
 
   Future<void> dispatchEvent(BuildContext context, T model, Event event) async {
     final ProviderAssist providerAssist = context.inheritFromWidgetOfExactType(ProviderAssist);
-    final List<EventMiddleware<Event>> eventMiddleware = providerAssist.eventMiddleware.where((EventMiddleware<Event> em) => em.eventType == event.runtimeType).toList();
+    final List<EventMiddleware<Event>> eventMiddleware = providerAssist.eventMiddleware;
+    final List<ErrorMiddleware> errorMiddleware = providerAssist.errorMiddleware;
 
-    for (EventMiddleware<Event> middleware in eventMiddleware) {
-      await middleware.handleEvent(context, event);
-      final bool shouldAbsorb = await middleware.shouldAbsorb(context, event);
-      if (shouldAbsorb) {
-        return;
+    await onEventStarted(context, model, event);
+
+    try {
+      for (EventMiddleware<Event> middleware in eventMiddleware) {
+        if (!middleware.matchesEventType(event)) {
+          continue;
+        }
+
+        final bool shouldHandle = await middleware.shouldHandle(context, this, event);
+        if (!shouldHandle) {
+          continue;
+        }
+
+        await middleware.handleEvent(context, this, event);
+        final bool shouldAbsorb = await middleware.shouldAbsorb(context, this, event);
+        if (shouldAbsorb) {
+          return;
+        }
       }
-    }
 
-    await model.handleEvent(context, event);
+      await model.handleEvent(context, event);
+      await onEventFinished(context, model, event);
+    } catch (ex) {
+      for (ErrorMiddleware middleware in errorMiddleware) {
+        final bool shouldHandle = await middleware.shouldHandle(context, this, ex);
+        if (!shouldHandle) {
+          continue;
+        }
+
+        await middleware.handleEvent(context, this, ex);
+        final bool shouldAbsorb = await middleware.shouldAbsorb(context, this, ex);
+        if (shouldAbsorb) {
+          return;
+        }
+      }
+
+      await onEventError(context, ex, model, event);
+    }
   }
 
   @override
@@ -59,9 +90,9 @@ class _EventViewState<T extends EventViewModel> extends State<EventView<T>> {
     );
   }
 
-  void onWidgetFirstBuilt(Duration timeStamp) {
+  Future<void> onWidgetFirstBuilt(Duration timeStamp) async {
     if (widget.onViewFirstLoad != null && mounted) {
-      widget.onViewFirstLoad(context, layoutInformation, model);
+      await widget.onViewFirstLoad(context, layoutInformation, model);
     }
   }
 }

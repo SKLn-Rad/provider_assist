@@ -1,3 +1,9 @@
+## [2.0.0] - 17/11/2019
+* BaseView and BaseViewModel are now deprecated in favour of the new EventView and EventViewModel inspired by React and FlutterBloc
+* Updated documentation to detail the new state management system
+* Added EventMiddleware to allow global handling of events (for example, moving common dialogs outside of the view, such as internet connectivity)
+* Added a new multi-provider called ProviderAssist, that when positioned in place of the top level multi-provider will allow middleware and localization
+
 ## [1.5.3] - 08/11/2019
 * Fix a potential NPE when trying to create a mock for a view model
 
