@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_assist/enumerations/middleware_resolution.dart';
 import 'package:provider_assist/provider_assist.dart';
 
 abstract class EventView<T extends EventViewModel> extends StatefulWidget {
@@ -32,14 +33,8 @@ abstract class EventView<T extends EventViewModel> extends StatefulWidget {
           continue;
         }
 
-        final bool shouldHandle = await middleware.shouldHandle(context, this, event);
-        if (!shouldHandle) {
-          continue;
-        }
-
-        await middleware.handleEvent(context, this, event);
-        final bool shouldAbsorb = await middleware.shouldAbsorb(context, this, event);
-        if (shouldAbsorb) {
+        final MiddlewareResolution resolution = await middleware.handleEvent(context, this, event);
+        if (resolution == MiddlewareResolution.Absorb) {
           return;
         }
       }
@@ -48,14 +43,8 @@ abstract class EventView<T extends EventViewModel> extends StatefulWidget {
       await onEventFinished(context, model, event);
     } catch (ex) {
       for (ErrorMiddleware middleware in errorMiddleware) {
-        final bool shouldHandle = await middleware.shouldHandle(context, this, ex);
-        if (!shouldHandle) {
-          continue;
-        }
-
-        await middleware.handleEvent(context, this, ex);
-        final bool shouldAbsorb = await middleware.shouldAbsorb(context, this, ex);
-        if (shouldAbsorb) {
+        final MiddlewareResolution resolution = await middleware.handleEvent(context, this, event);
+        if (resolution == MiddlewareResolution.Absorb) {
           return;
         }
       }

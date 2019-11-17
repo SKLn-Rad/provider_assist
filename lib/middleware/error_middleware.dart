@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider_assist/enumerations/middleware_resolution.dart';
 
 abstract class ErrorMiddleware {
-  Future<void> handleEvent(BuildContext context, Widget sender, Object error);
-  Future<bool> shouldHandle(BuildContext context, Widget sender, Object error);
-  Future<bool> shouldAbsorb(BuildContext context, Widget sender, Object error);
+  Future<MiddlewareResolution> handleEvent(BuildContext context, Widget sender, Object error);
 }

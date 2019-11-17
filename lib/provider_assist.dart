@@ -12,6 +12,7 @@ export 'adapters/layout_information.dart';
 export 'adapters/localization_information.dart';
 
 export 'enumerations/device_type.dart';
+export 'enumerations/middleware_resolution.dart';
 export 'events/event.dart';
 
 export 'middleware/error_middleware.dart';
