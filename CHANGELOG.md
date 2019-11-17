@@ -1,3 +1,6 @@
+## [2.0.0-beta-5] - 17/11/2019
+* Make provider assist inject itself into the top level providers so it can be accessed by the users own providers to dispatch events
+
 ## [2.0.0-beta-4] - 17/11/2019
 * Move event processing up to ProviderAssist so that any class may publish events given they have the instance of ProviderAssist
 

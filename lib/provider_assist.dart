@@ -67,7 +67,10 @@ class ProviderAssist extends InheritedWidget {
   @override
   Widget get child {
     return MultiProvider(
-      providers: providers,
+      providers: <SingleChildCloneableWidget>[
+        Provider<ProviderAssist>.value(value: this),
+        ...providers,
+      ],
       child: wrappedChild,
     );
   }

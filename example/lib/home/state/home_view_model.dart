@@ -6,6 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:provider_assist/provider_assist.dart';
 
 class HomeViewModel extends EventViewModel {
+  HomeViewModel({
+    @required this.providerAssist,
+  }) : assert(providerAssist != null);
+
+  //* ProviderAssist injects itself as a top level provider for you to access at any point
+  final ProviderAssist providerAssist;
   bool hasCalledEvent = false;
 
   @override

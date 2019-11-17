@@ -1,13 +1,16 @@
 import 'package:example/home/state/home_view_model.dart';
 import 'package:example/shared/events/present_dialog_event.dart';
 
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider_assist/provider_assist.dart';
 
 class HomeView extends EventView<HomeViewModel> {
   @override
   HomeViewModel buildModel(BuildContext context) {
-    return HomeViewModel();
+    return HomeViewModel(
+      providerAssist: Provider.of(context),
+    );
   }
 
   @override
