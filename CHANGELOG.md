@@ -1,3 +1,6 @@
+## [2.0.0-beta-6] - 18/11/2019
+* Catch exception on view handle event and throw to view handle error
+
 ## [2.0.0-beta-5] - 17/11/2019
 * Make provider assist inject itself into the top level providers so it can be accessed by the users own providers to dispatch events
 

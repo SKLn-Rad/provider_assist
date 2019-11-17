@@ -54,15 +54,18 @@ class _EventViewState<T extends EventViewModel> extends State<EventView<T>> {
     }
   }
 
-  void onProcessedEvent(ProcessedEvent event) {
+  Future<void> onProcessedEvent(ProcessedEvent event) async {
     if (!mounted) {
       return;
     }
 
-    if (event.hasError) {
-      model.handleError(context, event.event, event.error);
-    } else {
-      model.handleEvent(context, event.event);
+    try {
+      if (event.hasError) {
+        throw event.error;
+      }
+      await model.handleEvent(context, event.event);
+    } catch (ex) {
+      await model.handleError(context, event.event, ex);
     }
   }
 
