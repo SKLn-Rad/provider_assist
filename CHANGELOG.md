@@ -1,3 +1,6 @@
+## [2.0.0-beta-3] - 17/11/2019
+* Added BuildContext to buildModel function to allow dependency injection via the widget tree
+
 ## [2.0.0-beta-2] - 17/11/2019
 * Added onViewFirstLoad to EventViewModel to allow bootstrapping of the ViewModel
 
