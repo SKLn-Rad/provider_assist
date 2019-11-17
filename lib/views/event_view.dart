@@ -10,7 +10,7 @@ abstract class EventView<T extends EventViewModel> extends StatefulWidget {
   })  : assert(events != null),
         super(key: key);
 
-  T buildModel();
+  T buildModel(BuildContext context);
   Widget buildView(BuildContext context, LayoutInformation layoutInformation, T model);
 
   Future<void> onEventStarted(BuildContext context, T model, Event event) async {}
@@ -63,13 +63,13 @@ class _EventViewState<T extends EventViewModel> extends State<EventView<T>> {
 
   @override
   void initState() {
-    model ??= widget.buildModel();
     WidgetsBinding.instance.addPostFrameCallback(onWidgetFirstBuilt);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    model ??= widget.buildModel(context);
     layoutInformation ??= LayoutInformation(context: context);
     return ChangeNotifierProvider<T>(
       builder: (_) => model,

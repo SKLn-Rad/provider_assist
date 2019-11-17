@@ -6,7 +6,7 @@ import 'package:provider_assist/provider_assist.dart';
 
 class HomeView extends EventView<HomeViewModel> {
   @override
-  HomeViewModel buildModel() {
+  HomeViewModel buildModel(BuildContext context) {
     return HomeViewModel();
   }
 
