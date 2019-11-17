@@ -1,4 +1,5 @@
 import 'package:example/shared/events/present_dialog_event.dart';
+import 'package:example/shared/views/error_dialog.dart';
 import 'package:example/shared/views/hello_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,12 @@ class HomeViewModel extends EventViewModel {
         print('Unknown event: ${event.runtimeType}');
         break;
     }
+  }
+
+  @override
+  Future<void> handleError(BuildContext context, Event event, Object error) async {
+    final Exception ex = error as Exception;
+    await showDialog<HelloDialog>(context: context, builder: (BuildContext context) => ErrorDialog(error: ex));
   }
 
   Future<void> sayHello(BuildContext context) async {

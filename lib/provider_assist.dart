@@ -1,9 +1,13 @@
 library provider_assist;
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_assist/enumerations/middleware_resolution.dart';
 import 'package:provider_assist/middleware/error_middleware.dart';
 import 'package:provider_assist/middleware/event_middleware.dart';
+import 'package:provider_assist/models/processed_event.dart';
 
 import 'adapters/localization_information.dart';
 import 'events/event.dart';
@@ -25,7 +29,7 @@ export 'views/base_view.dart';
 export 'views/event_view.dart';
 
 class ProviderAssist extends InheritedWidget {
-  const ProviderAssist({
+  ProviderAssist({
     Key key,
     @required Widget child,
     this.eventMiddleware = const <EventMiddleware<Event>>[],
@@ -40,11 +44,19 @@ class ProviderAssist extends InheritedWidget {
         wrappedChild = child,
         super(key: key);
 
+  factory ProviderAssist.of(BuildContext context) {
+    return context.inheritFromWidgetOfExactType(ProviderAssist);
+  }
+
   final Widget wrappedChild;
   final List<SingleChildCloneableWidget> providers;
   final List<EventMiddleware<Event>> eventMiddleware;
   final List<ErrorMiddleware> errorMiddleware;
   final Map<Locale, Map<String, String>> localizations;
+
+  final StreamController<ProcessedEvent> processedEventStreamController = StreamController<ProcessedEvent>.broadcast();
+  Stream<ProcessedEvent> get processedEventStream => processedEventStreamController.stream;
+  Function(ProcessedEvent) get addProcessedEvent => processedEventStreamController.sink.add;
 
   @override
   InheritedElement createElement() {
@@ -58,6 +70,35 @@ class ProviderAssist extends InheritedWidget {
       providers: providers,
       child: wrappedChild,
     );
+  }
+
+  Future<void> dispatchEvent(BuildContext context, Object sender, Event event) async {
+    Object error;
+
+    //* Process Middleware
+    try {
+      for (EventMiddleware<Event> middleware in eventMiddleware) {
+        if (!middleware.matchesEventType(event)) {
+          continue;
+        }
+
+        final MiddlewareResolution resolution = await middleware.handleEvent(context, sender, event);
+        if (resolution == MiddlewareResolution.Absorb) {
+          return;
+        }
+      }
+    } catch (ex) {
+      error = ex;
+      for (ErrorMiddleware middleware in errorMiddleware) {
+        final MiddlewareResolution resolution = await middleware.handleEvent(context, sender, event);
+        if (resolution == MiddlewareResolution.Absorb) {
+          return;
+        }
+      }
+    }
+
+    //* Send to stream for view models to listen to
+    addProcessedEvent(ProcessedEvent(event: event, sender: sender, error: error));
   }
 
   @override

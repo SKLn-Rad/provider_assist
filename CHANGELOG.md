@@ -1,3 +1,6 @@
+## [2.0.0-beta-4] - 17/11/2019
+* Move event processing up to ProviderAssist so that any class may publish events given they have the instance of ProviderAssist
+
 ## [2.0.0-beta-3] - 17/11/2019
 * Added BuildContext to buildModel function to allow dependency injection via the widget tree
 
