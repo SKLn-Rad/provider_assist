@@ -1,3 +1,6 @@
+## [2.0.0-beta-2] - 17/11/2019
+* Added onViewFirstLoad to EventViewModel to allow bootstrapping of the ViewModel
+
 ## [2.0.0-beta-1] - 17/11/2019
 * BaseView and BaseViewModel are now deprecated in favour of the new EventView and EventViewModel inspired by React and FlutterBloc
 * Updated documentation to detail the new state management system
