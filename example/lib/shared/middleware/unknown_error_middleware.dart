@@ -4,7 +4,7 @@ import 'package:provider_assist/provider_assist.dart';
 
 class UnknownErrorMiddleware extends ErrorMiddleware {
   @override
-  Future<MiddlewareResolution> handleEvent(BuildContext context, Widget sender, Object error) async {
+  Future<MiddlewareResolution> handleEvent(BuildContext context, Widget sender, Event event, Object error) async {
     final bool shouldHandle = error is Exception;
     if (!shouldHandle) {
       return MiddlewareResolution.Passthrough;

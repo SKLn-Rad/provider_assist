@@ -101,7 +101,7 @@ class ProviderAssist extends InheritedWidget {
 
   Future<void> dispatchError(BuildContext context, Object sender, Event event, Object error) async {
     for (ErrorMiddleware middleware in errorMiddleware) {
-      final MiddlewareResolution resolution = await middleware.handleEvent(context, sender, event);
+      final MiddlewareResolution resolution = await middleware.handleEvent(context, sender, event, error);
       if (resolution == MiddlewareResolution.Absorb) {
         return;
       }

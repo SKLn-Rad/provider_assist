@@ -16,6 +16,8 @@ class HomeViewModel extends EventViewModel {
 
   @override
   Future<void> handleEvent(BuildContext context, Event event) async {
+    //* This is called if the event is not absorbed by middleware
+
     switch (event.runtimeType) {
       case PresentDialogEvent:
         await sayHello(context);
@@ -28,8 +30,7 @@ class HomeViewModel extends EventViewModel {
 
   @override
   Future<void> handleError(BuildContext context, Event event, Object error) async {
-    final Exception ex = error as Exception;
-    await showDialog<HelloDialog>(context: context, builder: (BuildContext context) => ErrorDialog(error: ex));
+    //* This is called if the error is not absorbed by middleware
   }
 
   Future<void> sayHello(BuildContext context) async {
