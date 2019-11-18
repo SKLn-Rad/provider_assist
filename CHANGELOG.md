@@ -1,3 +1,6 @@
+## [2.0.0-beta-8] - 19/11/2019
+* Give the event which raised the error to the error middleware as well
+
 ## [2.0.0-beta-7] - 18/11/2019
 * Bounce errors back up to provider assist so that middleware can handle them even if they occur at the view level
 
