@@ -7,9 +7,14 @@ Note: This pattern is very heavily influenced by FilledStacks Provider v3 Archit
 ## In a nutshell
 This package wraps your top level views for each page in BaseView, this widget should pass in a model which extends BaseViewModel. Once you have wrapped your view, this package will give you callbacks and metadata during build which can be used to enhance the quality of your code.
 
-## Breaking Change (1.5.0)
-The onViewFirstLoad, onEventReceived, and onErrorReceived callback will now supply the model. Please update your code to include this additional parameter.
-Apologies for this, this was an oversight on me but it will allow you to interact with your model immediately after the view is visible. This is useful for a number of things, e.g. checking if the user is logged in on a splash view.
+## Breaking Change (2.0.0)
+As well as moving to Provider version 4.0.0. A lot of minor quality of life improvements have been done to make using this a lot easier.  
+To name a few:
+1) Events are now dynamic, meaning you can pass anything as an event
+2) All global functions are now in the ProviderAssist singleton class, meaning it can be mocked easier
+3) Errors have been removed to reduce the amount of streams in a BaseView. As they're events in their own right, pass them as events
+
+In short, see the new example project for all the updates!
 
 ## Lifecycle
 ![Lifecycle](https://raw.githubusercontent.com/SKLn-Rad/provider_assist/master/lifecycle.png)
@@ -46,7 +51,7 @@ This is down to you! I use this on a daily basis so I will be adding features I 
 ## Example Main
 ```dart
 void main() {
-  registerTranslations(translations);
+  ProviderAssist.instance.registerTranslations(translations);
   runApp(MyApp());
 }
 
@@ -77,12 +82,10 @@ class MyApp extends StatelessWidget {
 Map<Locale, Map<String, String>> translations = {
   Locale('en'): {
     'view_title': 'Example Title',
-    'view_raise_error': 'Raise Error',
     'view_raise_event': 'Raise Event',
   },
   Locale('hi'): {
     'view_title': 'उदाहरण शीर्षक',
-    'view_raise_error': 'त्रुटि उठाएँ',
     'view_raise_event': 'घटना को बढ़ाएँ',
   },
 };
@@ -95,10 +98,7 @@ class View extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseView<ViewModel>(
       model: ViewModel(),
-      onErrorOccured: (BuildContext context, ViewModel model, String errorCode) {
-        print("Got a new error: $errorCode");
-      },
-      onEventOccured: (BuildContext context, ViewModel model, String event) {
+      onEventOccured: (BuildContext context, ViewModel model, dynamic event) {
         print("Got a new event: $event");
       },
       onModelReady: (ViewModel model) {
@@ -122,11 +122,6 @@ class View extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 CupertinoButton(
-                  child: Text(layout.translations['view_raise_error']),
-                  onPressed: () => vm.onErrorRequested(),
-                ),
-                SizedBox(height: 8.0),
-                CupertinoButton(
                   child: Text(layout.translations['view_raise_event']),
                   onPressed: () => vm.onEventRequested(),
                 ),
@@ -143,15 +138,6 @@ class View extends StatelessWidget {
 ### Example View Model
 ```dart
 class ViewModel extends BaseViewModel {
-  void onErrorRequested() {
-    try {
-      setBusy(true);
-      notifyError('Random error');
-    } finally {
-      setBusy(false);
-    }
-  }
-
   void onEventRequested() {
     try {
       setBusy(true);
