@@ -1,3 +1,6 @@
+## [2.0.1] - 29/12/2019
+* Fix broken readme from merge
+
 ## [2.0.0] - 29/12/2019
 * Migrate to provider version 4
 * Wrap common functions in singlton ProviderAssist class. All previous global functions will be found there, for example registerTranslations.
