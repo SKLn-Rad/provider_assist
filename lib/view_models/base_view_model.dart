@@ -2,22 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-@deprecated
 class BaseViewModel extends ChangeNotifier {
   bool _busy = false;
   bool get busy => _busy;
 
-  final StreamController<String> errorSubscription = StreamController<String>();
-  Stream<String> get onErrorOccured => errorSubscription.stream;
+  final StreamController<dynamic> eventSubscription = StreamController<dynamic>();
+  Stream<dynamic> get onEventOccured => eventSubscription.stream;
 
-  final StreamController<String> eventSubscription = StreamController<String>();
-  Stream<String> get onEventOccured => eventSubscription.stream;
-
-  void notifyError(String errorCode) {
-    errorSubscription.sink.add(errorCode);
-  }
-
-  void notifyEvent(String event) {
+  void notifyEvent(dynamic event) {
     eventSubscription.sink.add(event);
   }
 
@@ -28,7 +20,6 @@ class BaseViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    errorSubscription.close();
     eventSubscription?.close();
     super.dispose();
   }

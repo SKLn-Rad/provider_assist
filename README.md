@@ -5,14 +5,17 @@ Provider assist is a ton of helpful tools designed to improve development within
 
 This project is a brainchild of mine and is the core of any flutter application I personally develop. It serves these purposes:
 
-* Remove common boilerplate which is written each time I start a new application
-* Be simple enough for me to use it to train non-dart developers to start building their own application
-* Enforces best practice and consistency across my projects
+## Breaking Change (2.0.0)
+As well as moving to Provider version 4.0.0. A lot of minor quality of life improvements have been done to make using this a lot easier.  
+To name a few:
+1) Events are now dynamic, meaning you can pass anything as an event
+2) All global functions are now in the ProviderAssist singleton class, meaning it can be mocked easier
+3) Errors have been removed to reduce the amount of streams in a BaseView. As they're events in their own right, pass them as events
 
-Out of the box, these are the core features (for now):
-* Provides a basic MVVM state management system based on top of provider inspired by other frameworks (Bloc, Prism, Redux)
-* Provides localization out of the box
-* Provides common device information in each build function without the need for MediaQuery (Device Type, Screen Size, Safe Padding, etc)
+In short, see the new example project for all the updates!
+
+## Lifecycle
+![Lifecycle](https://raw.githubusercontent.com/SKLn-Rad/provider_assist/master/lifecycle.png)
 
 ##  A note to users from Provider 1.*
 As stated above, I hope for this framework to evolve as I encounter errors and directly reflect what I consider to be good practice at the time.
@@ -27,60 +30,9 @@ It will supply a number of useful properties about the devices, as well as the l
 
 Note: This is an inherited widget so if there are times when you require it outside of the view, you can obtain it anytime by doing the following.
 ```dart
-final LayoutInformation layout = LayoutInformation(context);
-```
-
-##  State Management
-State management in provider assist is meant to be easy to pick up and have elements of other common frameworks to more easily onboard new Flutter developers.
-
-At its core, it is an MVVM style framework, which fires events from the view via dispatchEvent in order to be processed.
-
-Unlike pure provider, it uncouples the View from the ViewModel and allows for easy testing of each component one at a time.
-
-This also means you can have middleware between the view and its state, like redux. (Just with less boilerplate, many thanks to AsyncRedux for its inspiration)
-
-Note: You MUST still call notifyListeners in your ViewModel to update the View
-
-### Middleware
-Note: Middleware is executed in order of how they are placed into the list in ProviderAssist
-
-* EventMiddleware
-Occurs before the event is passed to the view and can be used to catch common events to prevent rewriting the same code multiple times
-
-* ErrorMiddleware
-Catches errors which occur in the EventMiddleware or the Event itself, this like above means errors can be handled either in the view or globally.
-
-![Flow Diagram](https://i.ibb.co/k4rc4Vv/Untitled.png "Flow Diagram")
-
-## In Code
-### Above your MaterialApp
-```dart
-class App extends StatelessWidget {
-	@override
-	Widget build(BuildContext context) {
-		return ProviderAssist(
-			localizations:  Localization.translations,
-			eventMiddleware:  <EventMiddleware<Event>>[
-				DialogMiddleware(),
-			],
-			errorMiddleware:  <ErrorMiddleware>[
-				UnknownErrorMiddleware(),
-			],
-			child:  MaterialApp(
-				locale:  const  Locale('en'),
-				// locale: const Locale('hi'),
-				supportedLocales:  const  <Locale>[
-					Locale('en'),
-					Locale('hi'),
-				],
-				localizationsDelegates:  const  <LocalizationsDelegate>[
-					GlobalMaterialLocalizations.delegate,
-					GlobalWidgetsLocalizations.delegate,
-				],
-				home:  HomeView(),
-			),
-		);
-	}
+void main() {
+  ProviderAssist.instance.registerTranslations(translations);
+  runApp(MyApp());
 }
 ```
 ### Example View
@@ -138,18 +90,58 @@ class  HomeViewModel  extends  EventViewModel {
 			}
 		}
 
-	Future<void> sayHello(BuildContext context) async {
-		await showDialog<HelloDialog>(context: context, builder: (BuildContext context) =>  const  HelloDialog(sender:  'Home View'));
-		notifyListeners();
-	}
-}
+Map<Locale, Map<String, String>> translations = {
+  Locale('en'): {
+    'view_title': 'Example Title',
+    'view_raise_event': 'Raise Event',
+  },
+  Locale('hi'): {
+    'view_title': 'उदाहरण शीर्षक',
+    'view_raise_event': 'घटना को बढ़ाएँ',
+  },
+};
 ```
 ### Example Event
 ```dart
-class  PresentDialogEvent  extends  Event {
-	PresentDialogEvent(this.intercept, this.throwException);
-	final  bool intercept;
-	final  bool throwException;
+class View extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BaseView<ViewModel>(
+      model: ViewModel(),
+      onEventOccured: (BuildContext context, ViewModel model, dynamic event) {
+        print("Got a new event: $event");
+      },
+      onModelReady: (ViewModel model) {
+        print("Model is ready, but view is still not visible");
+      },
+      onViewFirstLoad: (BuildContext context, ViewModel model) {
+        print("View is rendered");
+      },
+      builder: (BuildContext context, ViewModel vm, LayoutInformation layout) {
+        print("Device type: ${layout.deviceType}");
+        print("Device orientation: ${layout.orientation}");
+        return Scaffold(
+          backgroundColor: layout.theme.backgroundColor,
+          appBar: AppBar(
+            title: Text(layout.translations['view_title']),
+          ),
+          body: Container(
+            width: double.infinity,
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CupertinoButton(
+                  child: Text(layout.translations['view_raise_event']),
+                  onPressed: () => vm.onEventRequested(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 ```
 ### Example Event Middleware
@@ -178,22 +170,15 @@ class  DialogMiddleware  extends  EventMiddleware<PresentDialogEvent> {
 ```
 ### Example Error Middleware
 ```dart
-class  UnknownErrorMiddleware  extends  ErrorMiddleware {
-	@override
-	Future<void> handleEvent(BuildContext context, Widget sender, Object error) async {
-		final  Exception ex = error as  Exception;
-		await showDialog<ErrorDialog>(context: context, builder: (BuildContext context) =>  ErrorDialog(error: ex));
-	}
-
-	@override
-	Future<bool> shouldAbsorb(BuildContext context, Widget sender, Object error) async {
-		return  true;
-	}
-
-	@override
-	Future<bool> shouldHandle(BuildContext context, Widget sender, Object error) async {
-		return error is  Exception;
-	}
+class ViewModel extends BaseViewModel {
+  void onEventRequested() {
+    try {
+      setBusy(true);
+      notifyEvent('Random event');
+    } finally {
+      setBusy(false);
+    }
+  }
 }
 ```
 Any questions?

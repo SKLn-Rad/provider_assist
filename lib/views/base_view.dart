@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 import 'package:provider_assist/provider_assist.dart';
 
-@deprecated
 class BaseView<T extends BaseViewModel> extends StatefulWidget {
   final Widget Function(BuildContext context, T model, LayoutInformation layoutInformation) builder;
   final T model;
   final Function(T) onModelReady;
   final Function(BuildContext context, T model) onViewFirstLoad;
-  final Function(BuildContext context, T model, String errorCode) onErrorOccured;
-  final Function(BuildContext context, T model, String event) onEventOccured;
+  final Function(BuildContext context, T model, dynamic event) onEventOccured;
 
   BaseView({
     Key key,
@@ -19,7 +18,6 @@ class BaseView<T extends BaseViewModel> extends StatefulWidget {
     this.model,
     this.onModelReady,
     this.onViewFirstLoad,
-    this.onErrorOccured,
     this.onEventOccured,
   }) : super(key: key);
 
@@ -28,8 +26,7 @@ class BaseView<T extends BaseViewModel> extends StatefulWidget {
 
 class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
   BaseViewModel model;
-  StreamSubscription<String> errorSubscription;
-  StreamSubscription<String> eventSubscription;
+  StreamSubscription<dynamic> eventSubscription;
   LayoutInformation layoutInformation;
 
   @override
@@ -40,22 +37,14 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
       widget.onModelReady(model);
     }
 
-    errorSubscription = model.onErrorOccured?.listen(onErrorOccured);
     eventSubscription = model.onEventOccured?.listen(onEventOccured);
     WidgetsBinding.instance.addPostFrameCallback(onWidgetFirstBuilt);
     super.initState();
   }
 
-  void onEventOccured(String event) {
+  void onEventOccured(dynamic event) {
     if (widget.onEventOccured != null && mounted) {
       widget.onEventOccured(context, model, event);
-      setState(() {});
-    }
-  }
-
-  void onErrorOccured(String event) {
-    if (widget.onErrorOccured != null && mounted) {
-      widget.onErrorOccured(context, model, event);
       setState(() {});
     }
   }
@@ -68,9 +57,9 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
 
   @override
   Widget build(BuildContext context) {
-    layoutInformation = LayoutInformation(context: context);
+    layoutInformation = LayoutInformation(context);
     return ChangeNotifierProvider<T>(
-      builder: (BuildContext context) => model,
+      create: (context) => model,
       child: Consumer<T>(
         builder: (BuildContext context, T t, Widget child) => widget.builder(context, t, layoutInformation),
       ),
@@ -79,7 +68,6 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
 
   @override
   void dispose() {
-    errorSubscription?.cancel();
     eventSubscription?.cancel();
     super.dispose();
   }

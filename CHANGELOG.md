@@ -1,29 +1,9 @@
-## [2.0.0-beta-8] - 19/11/2019
-* Give the event which raised the error to the error middleware as well
-
-## [2.0.0-beta-7] - 18/11/2019
-* Bounce errors back up to provider assist so that middleware can handle them even if they occur at the view level
-
-## [2.0.0-beta-6] - 18/11/2019
-* Catch exception on view handle event and throw to view handle error
-
-## [2.0.0-beta-5] - 17/11/2019
-* Make provider assist inject itself into the top level providers so it can be accessed by the users own providers to dispatch events
-
-## [2.0.0-beta-4] - 17/11/2019
-* Move event processing up to ProviderAssist so that any class may publish events given they have the instance of ProviderAssist
-
-## [2.0.0-beta-3] - 17/11/2019
-* Added BuildContext to buildModel function to allow dependency injection via the widget tree
-
-## [2.0.0-beta-2] - 17/11/2019
-* Added onViewFirstLoad to EventViewModel to allow bootstrapping of the ViewModel
-
-## [2.0.0-beta-1] - 17/11/2019
-* BaseView and BaseViewModel are now deprecated in favour of the new EventView and EventViewModel inspired by React and FlutterBloc
-* Updated documentation to detail the new state management system
-* Added EventMiddleware to allow global handling of events (for example, moving common dialogs outside of the view, such as internet connectivity)
-* Added a new multi-provider called ProviderAssist, that when positioned in place of the top level multi-provider will allow middleware and localization
+## [2.0.0] - 29/12/2019
+* Migrate to provider version 4
+* Wrap common functions in singlton ProviderAssist class. All previous global functions will be found there, for example registerTranslations.
+* Pass metadata in events
+* Events and Errors replaced with just Events. As errors are a type of event it seems redundant to have both of these fields
+* Events are now of type dynamic, this means you can pass complex classes down now instead (for example, including metadata)
 
 ## [1.5.3] - 08/11/2019
 * Fix a potential NPE when trying to create a mock for a view model
