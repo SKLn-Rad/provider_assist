@@ -1,3 +1,10 @@
+## [2.0.0] - 29/12/2019
+* Migrate to provider version 4
+* Wrap common functions in singlton ProviderAssist class. All previous global functions will be found there, for example registerTranslations.
+* Pass metadata in events
+* Events and Errors replaced with just Events. As errors are a type of event it seems redundant to have both of these fields
+* Events are now of type dynamic, this means you can pass complex classes down now instead (for example, including metadata)
+
 ## [1.5.3] - 08/11/2019
 * Fix a potential NPE when trying to create a mock for a view model
 

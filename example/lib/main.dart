@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider_assist/provider_assist.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'view.dart';
+import 'views/sample_view.dart';
 
 void main() {
-  registerTranslations(translations);
+  ProviderAssist.instance.registerTranslations(translations);
   runApp(MyApp());
 }
 
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: View(),
+      home: SampleView(),
     );
   }
 }
@@ -36,12 +36,10 @@ class MyApp extends StatelessWidget {
 Map<Locale, Map<String, String>> translations = {
   Locale('en'): {
     'view_title': 'Example Title',
-    'view_raise_error': 'Raise Error',
     'view_raise_event': 'Raise Event',
   },
   Locale('hi'): {
     'view_title': 'उदाहरण शीर्षक',
-    'view_raise_error': 'त्रुटि उठाएँ',
     'view_raise_event': 'घटना को बढ़ाएँ',
   },
 };

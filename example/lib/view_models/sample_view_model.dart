@@ -1,15 +1,6 @@
 import 'package:provider_assist/provider_assist.dart';
 
-class ViewModel extends BaseViewModel {
-  void onErrorRequested() {
-    try {
-      setBusy(true);
-      notifyError('Random error');
-    } finally {
-      setBusy(false);
-    }
-  }
-
+class SampleViewModel extends BaseViewModel {
   void onEventRequested() {
     try {
       setBusy(true);

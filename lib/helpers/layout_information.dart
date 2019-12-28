@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider_assist/provider_assist.dart';
 
+import '../provider_assist.dart';
+
 class LayoutInformation {
   LayoutInformation(BuildContext context)
       : context = context,
@@ -9,8 +11,7 @@ class LayoutInformation {
         deviceType = getDeviceTypeFromContext(context),
         orientation = MediaQuery.of(context).orientation,
         locale = Localizations.localeOf(context),
-        translations =
-            getTranslationsForLocale(Localizations.localeOf(context)),
+        translations = ProviderAssist.instance.getTranslationsForLocale(Localizations.localeOf(context)),
         theme = Theme.of(context);
 
   final BuildContext context;

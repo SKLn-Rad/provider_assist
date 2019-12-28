@@ -2,23 +2,37 @@ library provider_assist;
 
 import 'package:flutter/material.dart';
 
-export 'base_view.dart';
-export 'base_view_model.dart';
-export 'layout_information.dart';
-export 'device_type.dart';
+export 'views/base_view.dart';
+export 'view_models/base_view_model.dart';
 
-Map<Locale, Map<String, String>> _translations = {};
-Map<Locale, Map<String, String>> get translations => _translations;
+export 'helpers/layout_information.dart';
+export 'helpers/device_type.dart';
 
-void registerTranslations(Map<Locale, Map<String, String>> translations) {
-  _translations = translations;
-}
+class ProviderAssist {
+  ProviderAssist._();
+  static final ProviderAssist instance = ProviderAssist._();
 
-Map<String, String> getTranslationsForLocale(Locale locale) {
-  Map<String, String> translations = {};
-  if (locale != null && _translations.containsKey(locale)) {
-    translations = _translations[locale];
+  Map<Locale, Map<String, String>> _translations = <Locale, Map<String, String>>{};
+  Map<Locale, Map<String, String>> get translations => _translations;
+
+  String safelyTranslateByKey(Locale locale, String key) {
+    if (!_translations.containsKey(locale)) {
+      return '';
+    }
+
+    return _translations[locale].containsKey(key) ? _translations[locale] : '';
   }
 
-  return translations;
+  void registerTranslations(Map<Locale, Map<String, String>> translations) {
+    _translations = translations;
+  }
+
+  Map<String, String> getTranslationsForLocale(Locale locale) {
+    Map<String, String> translations = {};
+    if (locale != null && _translations.containsKey(locale)) {
+      translations = _translations[locale];
+    }
+
+    return translations;
+  }
 }
