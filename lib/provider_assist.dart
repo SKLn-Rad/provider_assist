@@ -1,19 +1,11 @@
 library provider_assist;
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:provider_assist/enumerations/middleware_resolution.dart';
-import 'package:provider_assist/middleware/error_middleware.dart';
-import 'package:provider_assist/middleware/event_middleware.dart';
-import 'package:provider_assist/models/processed_event.dart';
 
-export 'views/base_view.dart';
-export 'view_models/base_view_model.dart';
-
-export 'helpers/layout_information.dart';
 export 'helpers/device_type.dart';
+export 'helpers/layout_information.dart';
+export 'view_models/base_view_model.dart';
+export 'views/base_view.dart';
 
 class ProviderAssist {
   ProviderAssist._();

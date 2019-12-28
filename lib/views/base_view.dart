@@ -1,18 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
-import 'package:provider_assist/provider_assist.dart';
+import 'package:provider_assist/helpers/layout_information.dart';
+import 'package:provider_assist/view_models/base_view_model.dart';
 
 class BaseView<T extends BaseViewModel> extends StatefulWidget {
-  final Widget Function(BuildContext context, T model, LayoutInformation layoutInformation) builder;
-  final T model;
-  final Function(T) onModelReady;
-  final Function(BuildContext context, T model) onViewFirstLoad;
-  final Function(BuildContext context, T model, dynamic event) onEventOccured;
-
-  BaseView({
+  const BaseView({
     Key key,
     this.builder,
     this.model,
@@ -21,6 +15,13 @@ class BaseView<T extends BaseViewModel> extends StatefulWidget {
     this.onEventOccured,
   }) : super(key: key);
 
+  final Widget Function(BuildContext context, T model, LayoutInformation layoutInformation) builder;
+  final T model;
+  final Function(T) onModelReady;
+  final Function(BuildContext context, T model) onViewFirstLoad;
+  final Function(BuildContext context, T model, dynamic event) onEventOccured;
+
+  @override
   _BaseViewState<T> createState() => _BaseViewState<T>();
 }
 

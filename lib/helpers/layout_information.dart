@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider_assist/helpers/device_type.dart';
 import 'package:provider_assist/provider_assist.dart';
 
 import '../provider_assist.dart';

@@ -1,4 +1,0 @@
-enum MiddlewareResolution {
-  Absorb,
-  Passthrough,
-}
