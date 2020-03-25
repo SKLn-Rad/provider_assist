@@ -1,3 +1,6 @@
+## [2.0.2] - 25/03/2020
+* Dont add event to sink if closed
+
 ## [2.0.1] - 29/12/2019
 * Fix broken readme from merge
 
