@@ -10,6 +10,10 @@ class BaseViewModel extends ChangeNotifier {
   Stream<dynamic> get onEventOccured => eventSubscription.stream;
 
   void notifyEvent(dynamic event) {
+    if (eventSubscription == null || eventSubscription.isClosed) {
+      return;
+    }
+    
     eventSubscription.sink.add(event);
   }
 
