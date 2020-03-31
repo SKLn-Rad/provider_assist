@@ -1,37 +1,30 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider_assist/helpers/device_type.dart';
 import 'package:provider_assist/provider_assist.dart';
 
 import '../provider_assist.dart';
 
 class LayoutInformation {
-  LayoutInformation(BuildContext context)
-      : context = context,
-        deviceSize = MediaQuery.of(context).size,
-        devicePadding = MediaQuery.of(context).padding,
-        deviceType = getDeviceTypeFromContext(context),
-        orientation = MediaQuery.of(context).orientation,
-        locale = Localizations.localeOf(context),
-        translations = ProviderAssist.instance.getTranslationsForLocale(Localizations.localeOf(context)),
-        theme = Theme.of(context);
-
+  const LayoutInformation(this.context);
   final BuildContext context;
-  final Size deviceSize;
-  final EdgeInsets devicePadding;
-  final DeviceType deviceType;
-  final Orientation orientation;
-  final Locale locale;
-  final Map<String, String> translations;
-  final ThemeData theme;
+
+  MediaQueryData get media => MediaQuery.of(context);
+  Size get deviceSize => media.size;
+  EdgeInsets get devicePadding => media.padding;
+  Orientation get orientation => media.orientation;
+  double get pixelRatio => media.devicePixelRatio;
+
+  Locale get locale => Localizations.localeOf(context);
+  Map<String, String> get translations => ProviderAssist.instance.getTranslationsForLocale(locale);
+  ThemeData get theme => Theme.of(context);
 
   static const double phoneShortestWidthThreshold = 320.0;
   static const double tabletShortestWidthThreshold = 600.0;
   static const double desktopShortestWidthThreshold = 900.0;
-}
 
-DeviceType getDeviceTypeFromContext(BuildContext context) {
-  final Size size = MediaQuery.of(context).size;
-  final double shortestSize = size.shortestSide;
+  DeviceType get deviceType {
+  final double shortestSize = deviceSize.shortestSide;
 
   DeviceType type = DeviceType.Watch;
   if (shortestSize >= LayoutInformation.phoneShortestWidthThreshold) {
@@ -47,4 +40,5 @@ DeviceType getDeviceTypeFromContext(BuildContext context) {
   }
 
   return type;
+}
 }

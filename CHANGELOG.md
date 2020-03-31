@@ -1,3 +1,6 @@
+## [2.0.3] - 25/03/2020
+* Simplify Layout information class
+
 ## [2.0.2] - 25/03/2020
 * Dont add event to sink if closed
 
